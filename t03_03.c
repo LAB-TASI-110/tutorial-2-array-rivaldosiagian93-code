@@ -1,103 +1,51 @@
-#include <stdio.h>   
-#include <limits.h>  
+#include <stdio.h>
 
 int main() {
-    int n;        
-    int num;       
-    int min_val = INT_MAX; 
-    int max_val = INT_MIN; 
-    int count_valid_inputs = 0; 
+    int n;
+    scanf("%d", &n);
 
-    
-    int first_num_data = 0;
-    int second_num_data = 0;
-    int third_num_data = 0;
-    int fourth_num_data = 0;
+    int nilai[n];
 
-   
-    float avg_first_two = 0.0;
-    float avg_third_fourth = 0.0;
-
-    
-    printf("Masukkan jumlah angka yang akan diinput (n, bilangan bulat positif): ");
-    while (scanf("%d", &n) != 1 || n <= 0) {
-        printf("Input tidak valid. n harus bilangan bulat positif. Silakan masukkan lagi: ");
-        
-        while (getchar() != '\n');
+    // Input data
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &nilai[i]);
     }
 
-    printf("Silakan masukkan %d angka, setiap angka harus dalam rentang -100 sampai 100:\n", n);
+    int min = nilai[0];
+    int max = nilai[0];
 
-    
-    for (int i = 0; i < n; i++) {
-        printf("Masukkan angka ke-%d: ", i + 1);
-        
-       
-        if (scanf("%d", &num) != 1) {
-            printf("Input di luar batasan yang di perbolehkan: Input harus bilangan bulat.\n");
-            while (getchar() != '\n'); 
-            i--; 
-            continue; 
+    // Cari nilai min dan max
+    for(int i = 1; i < n; i++) {
+        if(nilai[i] < min) {
+            min = nilai[i];
         }
-
-      
-        if (num < -100 || num > 100) {
-            printf("Input di luar batasan yang di perbolehkan: Angka harus antara -100 dan 100.\n");
-            while (getchar() != '\n'); 
-            i--; 
-            continue;
-        }
-        
-       
-        count_valid_inputs++; 
-
-       
-        if (count_valid_inputs == 1) {
-            first_num_data = num;
-        } else if (count_valid_inputs == 2) {
-            second_num_data = num;
-            avg_first_two = (float)(first_num_data + second_num_data) / 2.0;
-        } else if (count_valid_inputs == 3) {
-            third_num_data = num;
-        } else if (count_valid_inputs == 4) {
-            fourth_num_data = num;
-            avg_third_fourth = (float)(third_num_data + fourth_num_data) / 2.0;
-        }
-
-        
-        if (num < min_val) {
-            min_val = num;
-        }
-        if (num > max_val) {
-            max_val = num;
+        if(nilai[i] > max) {
+            max = nilai[i];
         }
     }
 
-    printf("\nBerikut adalah luaran yang dihasilkan:\n");
-    
-    if (count_valid_inputs > 0) {
-        printf("%d\n", min_val); 
-        printf("%d\n", max_val); 
-        
-        
-        if (count_valid_inputs >= 2) { 
-            printf("%.2f\n", avg_first_two);
-        } else {
-            
-            printf("Tidak cukup input untuk menghitung rata-rata dua angka pertama.\n");
+    // Inisialisasi rata-rata berurutan pertama
+    float rata_min = (nilai[0] + nilai[1]) / 2.0;
+    float rata_max = rata_min;
+
+    // Cari rata-rata min dan max dari elemen berurutan
+    for(int i = 1; i < n - 1; i++) {
+        float rata = (nilai[i] + nilai[i+1]) / 2.0;
+
+        if(rata < rata_min) {
+            rata_min = rata;
         }
 
-        
-        if (count_valid_inputs >= 4) { 
-            printf("%.2f\n", avg_third_fourth);
-        } else {
-            
-            printf("Tidak cukup input untuk menghitung rata-rata angka ketiga dan keempat.\n");
+        if(rata > rata_max) {
+            rata_max = rata;
         }
-
-    } else {
-        printf("Tidak ada input angka yang valid diproses.\n");
     }
 
-    return 0; 
+    // Output
+    printf("%d\n", min);
+    printf("%d\n", max);
+    printf("%.2f\n", rata_min);
+    printf("%.2f\n", rata_max);
+
+    return 0;
 }
